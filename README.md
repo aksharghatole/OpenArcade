@@ -2,7 +2,9 @@
 
 A static browser game library for integrated games, open-source browser editions and legally acquired local game data.
 
-[Launch OpenArcade](https://aksharghatole.github.io/OpenArcade/)
+**[Launch OpenArcade](https://aksharghatole.github.io/OpenArcade/)**
+
+[Integrated games](#integrated-games) · [Run locally](#run-locally) · [Integration policy](#integration-policy) · [Roadmap](#roadmap)
 
 ## Run locally
 
