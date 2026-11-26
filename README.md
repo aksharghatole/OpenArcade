@@ -26,6 +26,10 @@ A complete original MIT-licensed Reversi implementation in `games/obsidian/`. In
 
 The original MIT-licensed 2048 by Gabriele Cirulli, integrated from a pinned upstream revision rather than linked externally. Includes the complete game engine, touchscreen swipes/buttons, keyboard, standard gamepad directions and locally saved board/best score. See [upstream and license details](games/2048/UPSTREAM.md).
 
+### Falling Blocks
+
+Self-hosted adaptation of [Jake Gordon’s upstream game](https://github.com/jakesgordon/javascript-tetris/tree/e5c0c42f7dac0f3514a55eff656c6e22e95d68ed) (MIT). The full upstream game loop is retained, with an independent name, palette, 12×22 playfield, responsive controls, pause, hard drop and validated local checkpoints. No original texture, stats library or commercial game assets are bundled. License is retained in `games/falling-blocks/LICENSE`. Keyboard, touch and standard gamepad input are implemented; browser/device verification remains a separate release gate.
+
 ## External editions
 
 Other catalogue cards currently link to third-party/community browser editions. Those are launch links, not bundled integrations; their controls, saves, availability and legal terms belong to their respective hosts. No commercial ROMs or copyrighted game data are included.
