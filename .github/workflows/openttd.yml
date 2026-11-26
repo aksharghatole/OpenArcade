@@ -27,8 +27,11 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - uses: actions/checkout@v4
+        env:
+          GIT_LFS_SKIP_SMUDGE: '1'
         with:
           repository: OpenTTD/OpenGFX2
+          lfs: false
           ref: 013cbc9e700c796af001a381a2d93592d49146ac
           path: graphics
           persist-credentials: false
