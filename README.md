@@ -6,17 +6,21 @@ A static browser game library for integrated games, open-source browser editions
 
 ## Run locally
 
-Open `index.html`, or run `python -m http.server 8000` from this directory. Starfall and the catalogue need no third-party dependencies. Service worker offline caching requires localhost or HTTPS.
+Open `index.html`, or run `python -m http.server 8000` from this directory. Built-in games and the catalogue need no third-party runtime dependencies. Service worker offline caching requires localhost or HTTPS.
 
 ## Deployment
 
-In Settings → Pages, select Deploy from a branch, `main`, `/ (root)`. The offline worker caches the catalogue and integrated game shells after the first online visit.
+In Settings → Pages, select Deploy from a branch, `main`, `/ (root)`. The offline worker caches the catalogue and built-in game shells after the first online visit.
 
 ## Integrated games
 
 ### Starfall
 
 A complete original five-sector arcade brick-breaker is hosted in `games/starfall/`. It runs without external requests, includes keyboard, pointer, touchscreen and standard Gamepad API controls, and stores best score, sector reach, and a resumable checkpoint in the browser's local storage. The root service worker caches the catalogue and game files for offline play. Code and CSS graphics are original and licensed under MIT (see `LICENSE`). There are no bundled third-party game assets.
+
+### Obsidian
+
+A complete original MIT-licensed Reversi implementation in `games/obsidian/`. Includes three AI difficulties, local two-player matches, automatic pass and endgame handling, move hints, undo, local match checkpoints and win/loss/draw records. Supports keyboard, touchscreen and standard gamepads. Cached by the root service worker. No third-party assets or runtime dependencies. Run `node games/obsidian/engine.test.cjs` for deterministic engine regression tests.
 
 ### 2048
 
