@@ -29,7 +29,7 @@ cp "$gfx/credits.md" "$dest/source/OPENGFX2-CREDITS.md"
 cp "$root/docs/openttd.md" "$root/scripts/build-openttd.sh" "$root/scripts/fetch-opengfx2.py" "$dest/source/"
 cp "$root/games/openttd-candidate/index.html" "$dest/index.html"
 cp "$root/index.html" "$root/sw.js" "$out/"
-cp -R "$root/games/starfall" "$out/games/"
+cp -R "$root/games/." "$out/games/"
 cp "$root/LICENSE" "$out/"
 python3 - "$out" <<'PY'
 from pathlib import Path
@@ -39,7 +39,7 @@ s = p.read_text()
 assert "play:'https://openwebports.org/ports/openttd/'" in s
 s = s.replace("play:'https://openwebports.org/ports/openttd/'", "play:'./games/openttd/'")
 s = s.replace("host:'Community port'},\n{id:'freedoom'", "host:'Integrated WebAssembly candidate'},\n{id:'freedoom'")
-s = s.replace("if(g.id==='starfall')", "if(g.id==='starfall'||g.id==='openttd')")
+s = s.replace("if(g.id==='starfall')", "if(g.play.startsWith('./games/'))")
 p.write_text(s)
 PY
 du -sh "$dest"
