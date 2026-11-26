@@ -10,13 +10,17 @@ Open `index.html`, or run `python -m http.server 8000` from this directory. Star
 
 ## Deployment
 
-In Settings → Pages, select Deploy from a branch, `main`, `/ (root)`. The offline worker caches the catalogue and Starfall shell after the first online visit.
+In Settings → Pages, select Deploy from a branch, `main`, `/ (root)`. The offline worker caches the catalogue and integrated game shells after the first online visit.
 
 ## Integrated games
 
 ### Starfall
 
 A complete original five-sector arcade brick-breaker is hosted in `games/starfall/`. It runs without external requests, includes keyboard, pointer, touchscreen and standard Gamepad API controls, and stores best score, sector reach, and a resumable checkpoint in the browser's local storage. The root service worker caches the catalogue and game files for offline play. Code and CSS graphics are original and licensed under MIT (see `LICENSE`). There are no bundled third-party game assets.
+
+### 2048
+
+The original MIT-licensed 2048 by Gabriele Cirulli, integrated from a pinned upstream revision rather than linked externally. Includes the complete game engine, touchscreen swipes/buttons, keyboard, standard gamepad directions and locally saved board/best score. See [upstream and license details](games/2048/UPSTREAM.md).
 
 ## External editions
 
@@ -25,6 +29,10 @@ Other catalogue cards currently link to third-party/community browser editions. 
 ## Integration policy
 
 For every bundled third-party game, pin the upstream version and check engine, asset, music and dependency licenses separately. Retain required notices and provide corresponding source/build instructions. Never bundle commercial ROMs or copyrighted game data without authorization. Imported user game files should stay on-device. Verify hosting limits, cross-origin headers, controls and saves before claiming support.
+
+## Project direction
+
+Build a polished browser gaming platform featuring full, legally redistributable open-source games, integrated WebAssembly ports, retro emulation, local game imports, controller support, save states, Android touchscreen controls and offline functionality. Prioritize real self-hosted playable games over external launchers; use free infrastructure and dependencies. Each integration must include licensing provenance and automated gameplay verification before production deployment.
 
 ## Roadmap
 
