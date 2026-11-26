@@ -10,13 +10,17 @@ Open `index.html`, or run `python -m http.server 8000` from this directory. Star
 
 ## Deployment
 
-In Settings → Pages, select Deploy from a branch, `main`, `/ (root)`. The offline worker caches the catalogue and Starfall shell after the first online visit.
+In Settings → Pages, select Deploy from a branch, `main`, `/ (root)`. The offline worker caches the catalogue and built-in game shells after the first online visit.
 
 ## Integrated games
 
 ### Starfall
 
 A complete original five-sector arcade brick-breaker is hosted in `games/starfall/`. It runs without external requests, includes keyboard, pointer, touchscreen and standard Gamepad API controls, and stores best score, sector reach, and a resumable checkpoint in the browser's local storage. The root service worker caches the catalogue and game files for offline play. Code and CSS graphics are original and licensed under MIT (see `LICENSE`). There are no bundled third-party game assets.
+
+### Falling Blocks
+
+Self-hosted adaptation of [Jake Gordon’s upstream game](https://github.com/jakesgordon/javascript-tetris/tree/e5c0c42f7dac0f3514a55eff656c6e22e95d68ed) (MIT). The full upstream game loop is retained, with an independent name, palette, 12×22 playfield, responsive controls, pause, hard drop and validated local checkpoints. No original texture, stats library or commercial game assets are bundled. License is retained in `games/falling-blocks/LICENSE`. Keyboard, touch and standard gamepad input are implemented; browser/device verification remains a separate release gate.
 
 ## External editions
 
