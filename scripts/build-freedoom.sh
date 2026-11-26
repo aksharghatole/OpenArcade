@@ -31,7 +31,7 @@ cp COPYING "$dest/source/DWASM-COPYING.txt"
 cp -R "$assets/notices/." "$dest/source/"
 cp "$root/scripts/build-freedoom.sh" "$root/scripts/patch-freedoom.py" "$root/docs/freedoom.md" "$dest/source/"
 cp "$root/index.html" "$root/sw.js" "$out/"
-cp -R "$root/games/starfall" "$out/games/"
+cp -R "$root/games/." "$out/games/"
 cp "$root/LICENSE" "$out/"
 python3 - "$out" <<'PY'
 from pathlib import Path
@@ -42,7 +42,7 @@ s = p.read_text()
 assert "play:'https://decompgames.com/games/freedoom/'" in s
 s = s.replace("play:'https://decompgames.com/games/freedoom/'", "play:'./games/freedoom/'")
 s = s.replace("host:'Community port listing'", "host:'Integrated WebAssembly candidate'")
-s = s.replace("if(g.id==='starfall')", "if(g.id==='starfall'||g.id==='freedoom')")
+s = s.replace("if(g.id==='starfall')", "if(g.play.startsWith('./games/'))")
 p.write_text(s)
 PY
 du -sh "$dest"
