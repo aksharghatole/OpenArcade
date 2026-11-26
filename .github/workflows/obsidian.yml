@@ -1,0 +1,31 @@
+name: Obsidian game checks
+on:
+  pull_request:
+    paths:
+      - 'games/obsidian/**'
+      - 'tests/obsidian-browser.cjs'
+      - 'index.html'
+      - 'sw.js'
+      - '.github/workflows/obsidian.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.51.1-noble
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node games/obsidian/engine.test.cjs
+      - run: npm install --no-save --no-package-lock playwright@1.51.1
+      - run: |
+          node -e 'const http=require("http"),fs=require("fs"),path=require("path");http.createServer((req,res)=>{let p=path.resolve("."+new URL(req.url,"http://localhost").pathname);if(p!==process.cwd()&&!p.startsWith(process.cwd()+path.sep)){res.writeHead(403).end();return}try{if(fs.statSync(p).isDirectory())p=path.join(p,"index.html");res.setHeader("Content-Type",p.endsWith(".js")?"text/javascript":p.endsWith(".html")?"text/html":"text/plain");res.end(fs.readFileSync(p))}catch{res.writeHead(404).end()}}).listen(8000,"127.0.0.1")' > /tmp/obsidian-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            if node -e 'fetch("http://127.0.0.1:8000/").then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))'; then break; fi
+            sleep 1
+          done
+          node tests/obsidian-browser.cjs

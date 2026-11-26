@@ -1,0 +1,6 @@
+/* SPDX-License-Identifier: MIT */
+'use strict';
+const E=require('./engine.js');
+console.log((function runTests(E){
+ const check=(x,msg)=>{if(!x)throw Error(msg)};let s=E.initial();check(E.valid(s),"initial valid");check(JSON.stringify(E.moves(s.board,1))==="[19,26,37,44]","opening moves");check(E.play(s,0)===null,"illegal");const next=E.play(s,19);check(E.score(next.board).join()==="4,1","flip and score");check(E.score(s.board).join()==="2,2","immutable");let passed=0,plies=0;for(let seed=1;seed<=16;seed++){s=E.initial();let n=seed;while(!s.over){const options=E.moves(s.board,s.turn);n=(n*1664525+1013904223)>>>0;const move=seed===1?E.choose(s,3):options[n%options.length];check(options.includes(move),"legal AI/selection");const before=s.board.filter(Boolean).length;s=E.play(s,move);check(E.valid(s),"valid state");check(s.board.filter(Boolean).length===before+1,"one disk added");if(s.passes===1)passed++;plies++;check(plies<=960,"termination")}check(E.moves(s.board,1).length===0&&E.moves(s.board,2).length===0,"terminal moves");check(E.choose(s)===null,"no terminal move")}check(passed>0,"forced pass exercised");check(!E.valid({...E.initial(),board:[1]}),"invalid board");for(const level of [1,2,3])check(E.moves(E.initial().board,1).includes(E.choose(E.initial(),level)),"difficulty legal");return {games:16,plies,forcedPasses:passed};
+})(E));
