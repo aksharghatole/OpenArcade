@@ -10,6 +10,14 @@ const assert=require('node:assert/strict'),{chromium}=require('playwright');
  await page.locator('#ct-army').tap();assert.ok(await page.evaluate(()=>G.selected.length>0));
  await page.locator('#ct-mode').tap();assert.equal(await page.locator('#ct-mode').getAttribute('aria-pressed'),'true');
  await page.locator('#game').tap({position:{x:180,y:140}});await page.waitForFunction(()=>G.units.some(u=>G.selected.includes(u.id)&&u.state!=='idle'));
+ for(const width of [320,390,760]){
+  await page.setViewportSize({width,height:844});
+  for(const id of ['btn-save','btn-pause','btn-quit']){
+   const bounds=await page.locator('#'+id).boundingBox();
+   assert.ok(bounds&&bounds.x>=0&&bounds.x+bounds.width<=width&&bounds.y>=0&&bounds.y+bounds.height<=844,id+' outside viewport at '+width);
+  }
+ }
+ await page.setViewportSize({width:390,height:844});
  await page.locator('#btn-pause').tap();await page.locator('#btn-save').tap();const tick=await page.evaluate(()=>G.tick);
  assert.ok(await page.evaluate(()=>hasBattleSave()));
  await page.evaluate(()=>navigator.serviceWorker.ready);await page.waitForFunction(()=>navigator.serviceWorker.controller&&navigator.serviceWorker.controller.scriptURL.endsWith('/games/crimson-tide/sw.js'));
