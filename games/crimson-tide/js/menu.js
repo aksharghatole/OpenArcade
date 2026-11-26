@@ -171,7 +171,7 @@ function setupResultButtons() {
 // ---------- in-game menu button ----------
 function setupInGameButtons() {
   document.getElementById('btn-pause').onclick = () => { G.paused = !G.paused; document.getElementById('btn-pause').textContent = G.paused ? '▶' : '⏸'; };
-  document.getElementById('btn-quit').onclick = () => { if (confirm('Save battle and return to menu?')) { saveBattle(); G.running = false; G.over = true; showScreen('home'); } };
+  document.getElementById('btn-quit').onclick = () => { if (confirm('Save battle and return to menu?')) { if(!saveBattle()&&!confirm('Saving failed. Leave without saving?'))return; G.running = false; G.over = true; showScreen('home'); } };
 }
 
 // ============================================================

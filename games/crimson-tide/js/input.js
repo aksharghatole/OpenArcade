@@ -108,7 +108,7 @@ function edgeScroll() {
   if (keys[KEYS.scrollRight] || keys['arrowright']) mvx += sp;
   if (keys[KEYS.scrollUp] || keys['arrowup']) mvy -= sp;
   if (keys[KEYS.scrollDown] || keys['arrowdown']) mvy += sp;
-  if (SETTINGS.edgeScroll && mouseInCanvas) {
+  if (SETTINGS.edgeScroll && mouseInCanvas && !matchMedia('(pointer: coarse)').matches) {
     if (edgeMouse.x < 24) mvx -= sp; else if (edgeMouse.x > canvas.width - 24) mvx += sp;
     if (edgeMouse.y < 24) mvy -= sp; else if (edgeMouse.y > canvas.height - 24) mvy += sp;
   }

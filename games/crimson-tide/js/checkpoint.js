@@ -29,7 +29,7 @@ function decodeBattle(raw){
  const data=JSON.parse(raw);if(data.version!==1)throw Error('Unsupported checkpoint version');
  const v=unpackGraph(data.graph),b=v.G;
  const grid=m=>Array.isArray(m)&&m.length===MAP_H&&m.every(r=>Array.isArray(r)&&r.length===MAP_W);
- if(!b||b.over||!b.cfg||!Object.hasOwn(FACTIONS,b.cfg.playerFaction)||!Object.hasOwn(DIFFICULTY,b.cfg.difficulty)||!Array.isArray(b.units)||!Array.isArray(b.buildings)||!b.players||!b.players[0]||![b.map,v.MAP_ORE,v.FOG,v.ELEV,v.BRIDGE].every(grid))throw Error('Invalid battle');
+ if(!b||b.over||!Number.isFinite(b.tick)||!v.cam||!Number.isFinite(v.cam.fx)||!Number.isFinite(v.cam.fy)||!b.cfg||!Object.hasOwn(FACTIONS,b.cfg.playerFaction)||!Object.hasOwn(DIFFICULTY,b.cfg.difficulty)||!Array.isArray(b.units)||!Array.isArray(b.buildings)||!b.players||!b.players[0]||![b.map,v.MAP_ORE,v.FOG,v.ELEV,v.BRIDGE].every(grid))throw Error('Invalid battle');
  for(const u of b.units){if(!Object.hasOwn(UNITS,u.key))throw Error('Invalid unit');u.def=UNITS[u.key];}
  for(const e of b.buildings){if(!Object.hasOwn(BUILDINGS,e.key))throw Error('Invalid building');e.def=BUILDINGS[e.key];}
  b.diff=DIFFICULTY[b.cfg.difficulty];return v;

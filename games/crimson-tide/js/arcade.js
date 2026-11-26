@@ -3,7 +3,8 @@
 (function(){
  const $=id=>document.getElementById(id);
  $('btn-resume').onclick=resumeBattle;
- $('btn-save').onclick=()=>flash(saveBattle()?'Battle checkpoint saved':'Could not save checkpoint');
+ const notice=document.createElement('div');notice.id='ct-message';notice.className='hidden';notice.setAttribute('role','status');$('hud').appendChild(notice);let noticeTimer;
+ $('btn-save').onclick=()=>{const message=saveBattle()?'Battle checkpoint saved':'Could not save checkpoint';flash(message);notice.textContent=message;notice.classList.remove('hidden');clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>notice.classList.add('hidden'),2500);};
  const mode=$('ct-mode');function setMode(m){touchMode=m;mode.textContent=m==='select'?'Select mode':'Command mode';mode.setAttribute('aria-pressed',String(m==='command'));}
  mode.onclick=()=>setMode(touchMode==='select'?'command':'select');
  $('ct-army').onclick=()=>{if(!G||G.over)return;G.selected=G.units.filter(u=>u.owner===0&&u.def.wpn&&!u.def.harvester).map(u=>u.id);refreshSelInfo();};
