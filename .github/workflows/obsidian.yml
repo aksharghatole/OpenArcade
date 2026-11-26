@@ -1,0 +1,31 @@
+name: Obsidian game checks
+on:
+  pull_request:
+    paths:
+      - 'games/obsidian/**'
+      - 'tests/obsidian-browser.cjs'
+      - 'index.html'
+      - 'sw.js'
+      - '.github/workflows/obsidian.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node games/obsidian/engine.test.cjs
+      - run: npm install --no-save --no-package-lock playwright@1.51.1
+      - run: npx playwright install --with-deps chromium
+      - run: |
+          python3 -m http.server 8000 > /tmp/obsidian-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fs http://127.0.0.1:8000/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/obsidian-browser.cjs
