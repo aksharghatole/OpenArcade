@@ -1,0 +1,22 @@
+'use strict';
+const assert=require('node:assert/strict');const {chromium}=require('playwright');
+(async()=>{const browser=await chromium.launch({headless:true});try{
+ const context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,userAgent:'Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36'});
+ const page=await context.newPage(),errors=[],external=[];
+ page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(!r.url().startsWith('http://127.0.0.1:8000')&&!r.url().startsWith('data:'))external.push(r.url());});
+ const url='http://127.0.0.1:8000/games/a-dark-room/';
+ await page.goto(url);await page.waitForFunction(()=>window.Engine&&Engine.activeModule===Room);
+ await page.getByRole('button',{name:'light fire',exact:true}).tap();
+ await page.waitForFunction(()=>Number($SM.get('game.fire.value',true))>0||document.querySelector('#stokeButton'));
+ await page.evaluate(()=>Engine.saveGame());
+ const state=await page.evaluate(()=>JSON.parse(ADRStorage.gameState));
+ assert.ok(state.game);assert.ok(state.features);
+ await page.evaluate(()=>{localStorage.setItem('openarcade-test-unrelated','keep');});
+ await page.evaluate(()=>navigator.serviceWorker.ready);
+ await page.waitForFunction(()=>navigator.serviceWorker.controller&&navigator.serviceWorker.controller.scriptURL.endsWith('/games/a-dark-room/sw.js'));
+ await context.setOffline(true);await page.reload();await page.waitForFunction(()=>Engine.activeModule===Room);
+ assert.ok(await page.evaluate(()=>JSON.parse(ADRStorage.gameState).features));
+ assert.equal(await page.evaluate(()=>localStorage.getItem('openarcade-test-unrelated')),'keep');
+ assert.deepEqual(errors,[]);assert.deepEqual(external,[]);
+ console.log('A Dark Room: real opening interaction, mobile viewport, local checkpoint, offline reload');
+ }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
