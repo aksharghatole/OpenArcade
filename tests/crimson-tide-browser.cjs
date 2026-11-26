@@ -5,7 +5,7 @@ const assert=require('node:assert/strict'),{chromium}=require('playwright');
  const page=await context.newPage(),errors=[],external=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(!r.url().startsWith('http://127.0.0.1:8000')&&!r.url().startsWith('blob:')&&!r.url().startsWith('data:'))external.push(r.url());});
  const url='http://127.0.0.1:8000/games/crimson-tide/';
- await page.goto(url);await page.locator('#btn-campaign').tap();assert.equal(await page.locator('.mission').count(),6);await page.locator('#screen-campaign .back-home').tap();
+ await page.goto(url);await page.locator('#btn-campaign').tap();assert.equal(await page.locator('.mission').count(),8);assert.equal(await page.evaluate(()=>CAMPAIGN.length),8);assert.equal(await page.evaluate(()=>Object.keys(FACTIONS).length),5);await page.locator('#screen-campaign .back-home').tap();
  await page.locator('#btn-skirmish').tap();await page.locator('#sk-start').tap();await page.waitForFunction(()=>G&&G.tick>2);
  await page.locator('#ct-army').tap();assert.ok(await page.evaluate(()=>G.selected.length>0));
  await page.locator('#ct-mode').tap();assert.equal(await page.locator('#ct-mode').getAttribute('aria-pressed'),'true');
