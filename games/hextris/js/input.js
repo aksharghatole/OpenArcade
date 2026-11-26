@@ -1,3 +1,4 @@
+/* Modified by OpenArcade, 2026-11-26. GPL-3.0-or-later; see ../LICENSE.md and ../UPSTREAM.md. */
 /* OpenArcade native keyboard, pointer and standard controller input (GPL-3.0-or-later). */
 function rotateHex(n){if(MainHex&&gameState===1)MainHex.rotate(n);}
 function startOrResume(){if(gameState===0)startBtnHandler();else if(gameState===-1)pause();else if(gameState===2){init(1);$("#gameoverscreen").hide();}}

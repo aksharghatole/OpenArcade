@@ -1,3 +1,4 @@
+/* Modified by OpenArcade, 2026-11-26. GPL-3.0-or-later; see ../LICENSE.md and ../UPSTREAM.md. */
 /* Modified by OpenArcade, GPL-3.0-or-later. Data-only save format; never evaluates stored source. */
 var arcadeStorage = {
   memory: Object.create(null),

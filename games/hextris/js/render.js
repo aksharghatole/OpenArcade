@@ -1,3 +1,4 @@
+/* Modified by OpenArcade, 2026-11-26. GPL-3.0-or-later; see ../LICENSE.md and ../UPSTREAM.md. */
 function render() {
 	var grey = '#bdc3c7';
 	if (gameState === 0) {

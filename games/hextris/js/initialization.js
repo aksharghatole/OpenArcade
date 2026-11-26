@@ -1,3 +1,4 @@
+/* Modified by OpenArcade, 2026-11-26. GPL-3.0-or-later; see ../LICENSE.md and ../UPSTREAM.md. */
 $(document).ready(function() {
 	initialize();
 });
@@ -249,16 +250,17 @@ function handlePause() {
 }
 
 function handleTap(e) {
-	if(e.target.closest('button,a,#arcade-nav,#arcade-pad,#gameoverscreen,#helpScreen'))return;
+	if(e.target.closest('button,a,#arcade-nav,#arcade-pad,#gameoverscreen,#helpScreen,#openSideBar,#pauseBtn,#restartBtn'))return;
 	handleClickTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
 }
 
 function handleClick(e) {
-	if(e.target.closest('button,a,#arcade-nav,#arcade-pad,#gameoverscreen,#helpScreen'))return;
+	if(e.target.closest('button,a,#arcade-nav,#arcade-pad,#gameoverscreen,#helpScreen,#openSideBar,#pauseBtn,#restartBtn'))return;
 	handleClickTap(e.clientX, e.clientY);
 }
 
 function handleTapBefore(e) {
+	if(e.target.closest('button,a,#openSideBar,#pauseBtn,#restartBtn,#arcade-nav,#arcade-pad'))return;
 	var x = e.changedTouches[0].clientX;
 	var y = e.changedTouches[0].clientY;
 
@@ -269,6 +271,7 @@ function handleTapBefore(e) {
 }
 
 function handleClickBefore(e) {
+	if(e.target.closest('button,a,#openSideBar,#pauseBtn,#restartBtn,#arcade-nav,#arcade-pad'))return;
 	var x = e.clientX;
 	var y = e.clientY;
 
