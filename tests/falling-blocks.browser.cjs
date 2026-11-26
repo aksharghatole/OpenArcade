@@ -9,7 +9,7 @@ const assert=require('node:assert/strict');
  const base='http://127.0.0.1:8000/';
  await page.goto(base);
  await page.evaluate(()=>navigator.serviceWorker.ready.then(()=>true));
- await page.getByRole('link',{name:'Play now'}).first().click();
+ await page.locator('article').filter({has:page.getByRole('heading',{name:'Falling Blocks',exact:true})}).getByRole('link',{name:'Play now'}).click();
  await page.waitForURL('**/games/falling-blocks/');
  await page.getByRole('button',{name:'Start game'}).tap();
  assert.equal(await page.evaluate(()=>playing),true);
