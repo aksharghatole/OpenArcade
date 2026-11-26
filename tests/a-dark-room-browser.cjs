@@ -7,15 +7,15 @@ const assert=require('node:assert/strict');const {chromium}=require('playwright'
  const url='http://127.0.0.1:8000/games/a-dark-room/';
  await page.goto(url);await page.waitForFunction(()=>window.Engine&&Engine.activeModule===Room);
  await page.getByRole('button',{name:'light fire',exact:true}).tap();
- await page.waitForFunction(()=>Number($SM.get('game.fire.value',true))>0||document.querySelector('#stokeButton'));
+ await page.waitForFunction(()=>Number($SM.get('game.fire.value',true))>0);
  await page.evaluate(()=>Engine.saveGame());
  const state=await page.evaluate(()=>JSON.parse(ADRStorage.gameState));
- assert.ok(state.game);assert.ok(state.features);
+ assert.ok(state.game.fire.value>0);assert.ok(state.features);
  await page.evaluate(()=>{localStorage.setItem('openarcade-test-unrelated','keep');});
  await page.evaluate(()=>navigator.serviceWorker.ready);
  await page.waitForFunction(()=>navigator.serviceWorker.controller&&navigator.serviceWorker.controller.scriptURL.endsWith('/games/a-dark-room/sw.js'));
  await context.setOffline(true);await page.reload();await page.waitForFunction(()=>Engine.activeModule===Room);
- assert.ok(await page.evaluate(()=>JSON.parse(ADRStorage.gameState).features));
+ assert.equal(await page.evaluate(()=>JSON.parse(ADRStorage.gameState).game.fire.value),state.game.fire.value);
  assert.equal(await page.evaluate(()=>localStorage.getItem('openarcade-test-unrelated')),'keep');
  assert.deepEqual(errors,[]);assert.deepEqual(external,[]);
  console.log('A Dark Room: real opening interaction, mobile viewport, local checkpoint, offline reload');
