@@ -1,0 +1,4 @@
+'use strict';
+const engine=require('../games/circuit-vault/core.js');
+function tests(e){const assert=(cond,msg)=>{if(!cond)throw Error(msg);};const mins=e.levels.map((l,i)=>e.solve(i));assert(mins.every(x=>Number.isInteger(x)&&x>0),'All sectors solvable');const s=e.load(0);assert(e.step(s,'down')===s,'Wall collision');const p=e.step(s,'up');assert(p.pushes===1&&p.moves===1,'Push counted');assert(s.moves===0,'Immutable state');const restored=e.restore(0,['down','up','left','invalid']);assert(restored.s.moves===restored.valid.length,'Replay drops invalid moves');assert(restored.history.length===restored.valid.length+1,'Undo history');assert(e.won({...s,boxes:s.goals.slice()}),'Victory detection');return mins;}
+console.log('Circuit Vault: all sectors solvable, minimum pushes:',tests(engine));
