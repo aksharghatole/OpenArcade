@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>2048</title>
+
+  <link href="style/main.css" rel="stylesheet" type="text/css">
+
+
+
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="style/arcade.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <nav class="arcade-nav"><a href="../../">← OpenArcade</a><span>SELF-HOSTED · OFFLINE</span></nav>
+    <div class="heading">
+      <h1 class="title">2048</h1>
+      <div class="scores-container">
+        <div class="score-container">0</div>
+        <div class="best-container">0</div>
+      </div>
+    </div>
+
+    <div class="above-game">
+      <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
+      <button type="button" class="restart-button">New Game</button>
+    </div>
+
+    <div class="game-container">
+      <div class="game-message">
+        <p></p>
+        <div class="lower">
+	        <button type="button" class="keep-playing-button">Keep going</button>
+          <button type="button" class="retry-button">Try again</button>
+        </div>
+      </div>
+
+      <div class="grid-container">
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+      </div>
+
+      <div class="tile-container">
+
+      </div>
+    </div>
+
+    <div class="arcade-pad" aria-label="Touch direction controls"><button type="button" data-move="0" aria-label="Move up">↑</button><button type="button" data-move="3" aria-label="Move left">←</button><button type="button" data-move="2" aria-label="Move down">↓</button><button type="button" data-move="1" aria-label="Move right">→</button></div>
+    <p class="game-explanation">
+      <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
+    </p>
+    <hr>
+    <p>
+    <strong class="important">OpenArcade edition:</strong> An independent, locally hosted adaptation of the original MIT-licensed 2048. Use arrow keys, WASD, swipe, direction buttons or a standard controller. Your current board and best score are saved on this device. <a href="LICENSE.txt">MIT license</a> · <a href="https://github.com/gabrielecirulli/2048/tree/478b6ec346e3787f589e4af751378d06ded4cbbc">Pinned upstream source</a>.
+    </p>
+    <hr>
+    <p>
+    Created by <a href="https://gabrielecirulli.com" target="_blank" rel="noopener noreferrer">Gabriele Cirulli.</a> Based on <a href="https://itunes.apple.com/us/app/1024!/id823499224" target="_blank" rel="noopener noreferrer">1024 by Veewo Studio</a> and conceptually similar to <a href="https://asherv.com/threes/" target="_blank" rel="noopener noreferrer">Threes by Asher Vollmer.</a>
+    </p>
+  </div>
+
+  <script src="js/bind_polyfill.js"></script>
+  <script src="js/classlist_polyfill.js"></script>
+  <script src="js/animframe_polyfill.js"></script>
+  <script src="js/keyboard_input_manager.js"></script>
+  <script src="js/html_actuator.js"></script>
+  <script src="js/grid.js"></script>
+  <script src="js/tile.js"></script>
+  <script src="js/local_storage_manager.js"></script>
+  <script src="js/game_manager.js"></script>
+  <script src="js/application.js"></script>
+  <script src="js/arcade.js"></script>
+</body>
+</html>
