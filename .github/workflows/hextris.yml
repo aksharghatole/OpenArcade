@@ -3,7 +3,7 @@ on:
   pull_request:
     paths:
       - 'games/hextris/**'
-      - 'tests/hextris-browser.cjs'
+      - 'tests/hextris-*.cjs'
       - '.github/workflows/hextris.yml'
   workflow_dispatch:
 permissions:
@@ -17,6 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - run: node tests/hextris-engine.cjs
       - run: npm install --no-save --no-package-lock playwright@1.51.1
       - run: npx playwright install --with-deps chromium
       - run: |
