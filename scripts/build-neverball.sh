@@ -28,7 +28,7 @@ cp -R doc/legal js/source/legal
 mkdir -p "$out/games/neverball"
 cp -R js/. "$out/games/neverball/"
 cp "$root/index.html" "$root/sw.js" "$out/"
-cp -R "$root/games/starfall" "$out/games/"
+cp -R "$root/games/." "$out/games/"
 cp "$root/LICENSE" "$out/"
 python3 - "$out" <<'PY'
 from pathlib import Path
@@ -39,7 +39,7 @@ s = p.read_text()
 assert "play:'https://play.neverball.org/'" in s
 s = s.replace("play:'https://play.neverball.org/'", "play:'./games/neverball/'")
 s = s.replace("host:'Web edition'},\n{id:'supertux'", "host:'Integrated WebAssembly candidate'},\n{id:'supertux'")
-s = s.replace("if(g.id==='starfall')", "if(g.id==='starfall'||g.id==='neverball')")
+s = s.replace("if(g.id==='starfall')", "if(g.play.startsWith('./games/'))")
 p.write_text(s)
 p = root / 'sw.js'
 s = p.read_text()
