@@ -1,0 +1,5 @@
+# OpenArcade contributor instructions
+
+Build a polished browser gaming platform featuring full, legally redistributable open-source games, integrated WebAssembly ports, retro emulation, local game imports, controller support, save states, Android touchscreen controls and offline functionality.
+
+Inspect the repository, open issues and concurrent branches before changes. Prioritize actual playable, self-hosted games over external launchers and original minigames. Pin upstream revisions; audit code, assets, dependencies and trademarks separately, preserve license notices and source obligations. Never distribute commercial ROMs or unlicensed assets. User-imported game files and saves should stay on-device. Use free infrastructure and dependencies. Implement, test, commit and verify changes; distinguish actual runtime checks from static/unit checks, and never advertise an unverified candidate as deployed. Make routine engineering decisions independently. Use separate branches for concurrent work; do not overwrite another contributor's work.
