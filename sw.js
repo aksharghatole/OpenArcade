@@ -1,7 +1,7 @@
 'use strict';
-const CACHE='openarcade-shell-falling-blocks-v1';
+const CACHE='openarcade-shell-obsidian-falling-v3';
 const base=new URL('./',self.registration.scope);
-const shell=['','index.html','games/starfall/','games/starfall/index.html','games/starfall/style.css','games/starfall/game.js','games/falling-blocks/','games/falling-blocks/index.html','games/falling-blocks/game.js','games/falling-blocks/LICENSE'].map(path=>new URL(path,base).href);
+const shell=["","index.html","games/starfall/","games/starfall/index.html","games/starfall/style.css","games/starfall/game.js","games/obsidian/","games/obsidian/index.html","games/obsidian/engine.js","games/obsidian/game.js","games/falling-blocks/","games/falling-blocks/index.html","games/falling-blocks/game.js","games/falling-blocks/LICENSE"].map(path=>new URL(path,base).href);
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(shell)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('openarcade-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{
