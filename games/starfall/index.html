@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#090b15">
+  <meta name="description" content="Starfall, a free offline-ready arcade brick-breaker from OpenArcade.">
+  <title>Starfall — OpenArcade</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="../../" aria-label="OpenArcade home"><span>✦</span> OPEN / ARCADE</a>
+      <div class="top-actions"><span class="offline"><i></i> OFFLINE READY</span><button id="soundToggle" class="icon-button" aria-pressed="true" aria-label="Mute sound">♫</button><a class="back" href="../../">Library</a></div>
+    </header>
+    <section class="intro">
+      <div><p class="eyebrow">ORIGINAL ARCADE · GAME 001</p><h1>Starfall</h1><p class="lede">Break the signal wall. Catch drifting upgrades. Clear five sectors and leave a brighter sky behind.</p></div>
+      <div class="best-box"><span>PERSONAL BEST</span><strong id="bestScore">000000</strong><small id="sectorRecord">SECTOR 1 REACHED</small></div>
+    </section>
+    <section class="game-layout" aria-label="Starfall game">
+      <div class="cabinet">
+        <div class="hud" aria-live="polite">
+          <div><span>SCORE</span><strong id="score">000000</strong></div>
+          <div><span>SECTOR</span><strong id="sector">01 <small>/ 05</small></strong></div>
+          <div><span>SHIELDS</span><strong id="lives">♥ ♥ ♥</strong></div>
+          <button id="pauseButton" class="pause" aria-label="Pause game" disabled>Ⅱ</button>
+        </div>
+        <div class="stage-wrap">
+          <canvas id="stage" width="960" height="600" aria-label="Starfall game field. Move with arrow keys or A and D, launch with Space."></canvas>
+          <div id="overlay" class="overlay">
+            <div class="overlay-card"><p class="eyebrow" id="overlayEyebrow">READY PLAYER ONE</p><h2 id="overlayTitle">A little light<br>goes a long way.</h2><p id="overlayText">Clear every signal block. Keep the ball in play and watch for falling upgrades.</p><button id="primaryAction" class="primary">Start game <span>→</span></button><button id="restoreAction" class="secondary" hidden>Continue saved run</button></div>
+          </div>
+        </div>
+        <div class="touch-controls" aria-label="Touch controls">
+          <button data-move="-1" aria-label="Move paddle left">←</button><button data-action="launch" class="launch-control" aria-label="Launch or continue">LAUNCH</button><button data-move="1" aria-label="Move paddle right">→</button>
+        </div>
+        <div class="cabinet-foot"><span id="statusText">READY WHEN YOU ARE</span><span>LOCAL SAVE <b>●</b></span></div>
+      </div>
+      <aside class="side-panel">
+        <div class="panel-card"><p class="eyebrow">FIELD GUIDE</p><h2>Keep your orbit.</h2><ul><li><kbd>←</kbd><kbd>→</kbd> or <kbd>A</kbd><kbd>D</kbd> move</li><li><kbd>Space</kbd> launch / continue</li><li><kbd>Esc</kbd> pause and save</li><li>Drag or tap the pad on touchscreens</li><li>Gamepads: stick / D-pad, A to launch</li></ul></div>
+        <div class="panel-card upgrades"><p class="eyebrow">SIGNAL DROPS</p><div><span class="drop wide">W</span><p><b>Wide beam</b><small>A broader paddle</small></p></div><div><span class="drop slow">S</span><p><b>Slow time</b><small>A gentler return</small></p></div><div><span class="drop split">✦</span><p><b>Star twins</b><small>Two extra balls</small></p></div></div>
+        <p class="license-note">Made for OpenArcade. Original code and graphics, licensed under MIT. No external assets.</p>
+      </aside>
+    </section>
+    <footer><a href="../../">← Back to the OpenArcade library</a><span>Built to play on desktop, phone and offline.</span></footer>
+  </main>
+  <script src="game.js" defer></script>
+</body>
+</html>
