@@ -25,8 +25,14 @@ jobs:
           persist-credentials: false
       - name: Install upstream build dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libpng-dev libjpeg-dev pkg-config libsdl2-dev libcurl4-openssl-dev ffmpeg zip unzip
+          for attempt in 1 2 3; do
+            sudo rm -rf /var/lib/apt/lists/*
+            if sudo apt-get -o Acquire::Retries=3 -o Acquire::http::No-Cache=true update && sudo apt-get -o Acquire::Retries=3 -o Acquire::http::No-Cache=true install -y --no-install-recommends libpng-dev libjpeg-dev pkg-config libsdl2-dev libcurl4-openssl-dev ffmpeg zip unzip; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
       - name: Build and stage candidate
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE/upstream"
