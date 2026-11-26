@@ -1,0 +1,65 @@
+name: OpenTTD integration candidate
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/*openttd*'
+      - 'scripts/fetch-opengfx2.py'
+      - 'docs/openttd.md'
+      - 'games/openttd-candidate/**'
+      - 'tests/openttd-browser.cjs'
+      - '.github/workflows/openttd.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: emscripten/emsdk:3.1.57
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: OpenTTD/OpenTTD
+          ref: 14ec60f248547d4d062a1160f0fc26d742319888
+          path: upstream
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: OpenTTD/OpenGFX2
+          ref: 013cbc9e700c796af001a381a2d93592d49146ac
+          path: graphics
+          persist-credentials: false
+      - name: Configure upstream native toolchain
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE/upstream"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE/graphics"
+          apt-get update
+          apt-get install -y gcc-12 g++-12
+          update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100
+          update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100
+      - name: Build engine and bundle verified graphics
+        run: bash scripts/build-openttd.sh upstream graphics "$GITHUB_WORKSPACE/candidate"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openttd-candidate
+          path: candidate/
+          retention-days: 3
+          if-no-files-found: error
+  browser:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container:
+      image: mcr.microsoft.com/playwright:v1.51.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: openttd-candidate
+          path: preview/OpenArcade
+      - run: npm install --no-save --package-lock=false playwright@1.51.1 pngjs@7.0.0
+      - run: node tests/openttd-browser.cjs
