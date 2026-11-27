@@ -1,0 +1,31 @@
+name: A Dark Room browser checks
+on:
+  pull_request:
+    paths:
+      - 'games/a-dark-room/**'
+      - 'tests/a-dark-room-*.cjs'
+      - 'tests/adr-http-server.cjs'
+      - '.github/workflows/a-dark-room.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.51.1-noble
+      options: --ipc=host
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tests/a-dark-room-engine.cjs
+      - run: npm install --no-save --no-package-lock playwright@1.51.1
+      - run: |
+          node tests/adr-http-server.cjs > /tmp/openarcade-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true; cat /tmp/openarcade-http.log' EXIT
+          node -e 'const wait=async()=>{for(let i=0;i<30;i++){try{if((await fetch("http://127.0.0.1:8000/games/a-dark-room/")).ok)return}catch{}await new Promise(r=>setTimeout(r,1000))}throw Error("Test server not ready")};wait().catch(e=>{console.error(e);process.exitCode=1})'
+          node tests/a-dark-room-browser.cjs
