@@ -35,5 +35,18 @@ class ArchiveTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "web entry"):
             self.run_archive([("index.html", "html")])
 
+class ShellPatchTests(unittest.TestCase):
+    def test_removes_analytics_and_guards_worker_takeover(self):
+        original = """<script defer src='https://static.cloudflareinsights.com/beacon.min.js'></script>
+<script>navigator.serviceWorker.addEventListener('controllerchange', () => {});</script>"""
+        patched = stage.patch_shell(original)
+        self.assertNotIn("cloudflareinsights.com", patched)
+        self.assertIn("if (!wasOwnController || !openArcadeOwnController) return;", patched)
+        self.assertIn("new URL('service-worker.js', location.href)", patched)
+
+    def test_unexpected_shell_fails_closed(self):
+        with self.assertRaisesRegex(ValueError, "analytics markup"):
+            stage.patch_shell("<html></html>")
+
 if __name__ == "__main__":
     unittest.main()
