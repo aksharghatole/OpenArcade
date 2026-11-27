@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Stage the official Warzone 2100 web release for local candidate testing only."""
 import hashlib
+import re
 import shutil
 import stat
 import sys
@@ -41,6 +42,25 @@ def extract_verified(archive, target, expected=SHA256):
         raise ValueError("Expected exactly one web entry with a WASM payload")
     return pages[0].parent
 
+def patch_shell(text):
+    # Remove analytics from this local preview; keep gameplay and source notices.
+    text, removed = re.subn(
+        r"<script\b[^>]*\bsrc=['\"]https://static\.cloudflareinsights\.com/beacon\.min\.js['\"][^>]*>\s*</script>",
+        "", text, flags=re.IGNORECASE)
+    if removed != 1:
+        raise ValueError("Unexpected upstream analytics markup")
+    # Only a replacement of an existing game worker warrants an update prompt.
+    anchor = "navigator.serviceWorker.addEventListener('controllerchange', () => {"
+    if text.count(anchor) != 1:
+        raise ValueError("Unexpected upstream service worker markup")
+    text = text.replace(anchor, """const openArcadeWorkerURL = new URL('service-worker.js', location.href).href;
+      let openArcadeOwnController = navigator.serviceWorker.controller?.scriptURL === openArcadeWorkerURL;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        const wasOwnController = openArcadeOwnController;
+        openArcadeOwnController = navigator.serviceWorker.controller?.scriptURL === openArcadeWorkerURL;
+        if (!wasOwnController || !openArcadeOwnController) return;""")
+    return text
+
 def stage(archive, out):
     if out.exists():
         raise ValueError("Use a fresh preview output directory")
@@ -50,6 +70,9 @@ def stage(archive, out):
         shutil.copytree(ROOT / "games", out / "games")
         game = out / "games" / "warzone2100"
         shutil.copytree(webroot, game)
+        shell = game / "index.html"
+        shell.write_text(patch_shell(shell.read_text()))
+        shutil.copy2(Path(__file__), game / "openarcade-stage-source.py")
         shutil.copy2(ROOT / "docs" / "warzone2100.md", game / "OPENARCADE-CANDIDATE.md")
         index = (ROOT / "index.html").read_text()
         anchor = "const $=id=>"
