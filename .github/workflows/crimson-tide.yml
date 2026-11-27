@@ -1,0 +1,28 @@
+name: Crimson Tide browser checks
+on:
+  pull_request:
+    paths:
+      - 'games/crimson-tide/**'
+      - 'tests/crimson-tide-*.cjs'
+      - '.github/workflows/crimson-tide.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.51.1-noble
+      options: --ipc=host
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tests/crimson-tide-engine.cjs
+      - run: npm install --no-save --no-package-lock playwright@1.51.1
+      - run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/openarcade-http.log 2>&1 &
+          for i in {1..20}; do curl -fsS http://127.0.0.1:8000/ >/dev/null && break; sleep 1; done
+          node tests/crimson-tide-browser.cjs

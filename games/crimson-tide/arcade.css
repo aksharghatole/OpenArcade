@@ -1,0 +1,23 @@
+/* OpenArcade responsive overlay, MIT. */
+#game{width:calc(100% - 232px);height:calc(100% - 44px);touch-action:none;}
+#minimap{touch-action:none;}
+.ct-links{text-align:center;margin:12px 0;font-size:14px}.ct-links a{color:inherit;}
+#ct-controls{position:absolute;z-index:12;bottom:12px;left:10px;max-width:calc(100% - 250px);display:flex;flex-wrap:wrap;gap:6px;pointer-events:none;}
+#ct-controls button{pointer-events:auto;padding:8px;min-height:42px;border-radius:7px;border:1px solid #a4c8ae;background:#f7fff7;color:#254c35;font-weight:700;touch-action:none;}
+#ct-mode[aria-pressed=true]{background:#264c35;color:#fff;}
+#ct-pan{display:flex;gap:3px;}#ct-pan button{min-width:40px;}#ct-reticle{position:absolute;z-index:11;pointer-events:none;left:calc((100% - 232px)/2);top:calc(50% + 22px);color:white;text-shadow:0 0 4px black;font:bold 24px sans-serif;transform:translate(-50%,-50%);}
+@media(max-width:760px){.screen{padding:12px;align-items:flex-start;}.home-inner{max-width:100%;margin:auto;}.title{font-size:clamp(28px,8vw,64px);}.panel-screen{max-height:95vh;padding:16px;}.factions,.settings-grid{grid-template-columns:1fr;}.setup-row{flex-wrap:wrap;}#topbar{gap:6px;padding:0 6px;font-size:11px;height:44px;}#status-msg,#faction-name,#credits-cap{display:none;}#topbar .res{gap:2px;}.hud-btn{min-width:30px;}#game{width:100%;height:calc(100% - 244px);}#sidebar{top:auto;bottom:0;left:0;right:0;width:100%;height:200px;display:grid;grid-template-columns:90px 1fr;grid-template-rows:36px 1fr;}.panel{grid-column:2;grid-row:2;grid-template-columns:repeat(3,minmax(0,1fr));padding:4px;gap:4px;}#tabs{grid-column:2;grid-row:1;padding:2px;}#minimap-wrap{grid-row:1/3;padding:4px;}#minimap{width:80px;height:80px;}#sel-info{display:none;}#ct-controls{bottom:208px;max-width:calc(100% - 20px);gap:4px;}#ct-controls button{font-size:11px;padding:5px;min-height:40px;}#ct-reticle{left:50%;top:calc((100% - 244px)/2 + 44px);}#tooltip{display:none;}}
+
+#ct-message{position:absolute;z-index:20;left:50%;top:54px;transform:translateX(-50%);padding:8px 14px;background:#244834;color:white;border-radius:8px;pointer-events:none;font:13px system-ui,sans-serif;white-space:nowrap;}@media(max-width:760px){.main-menu{width:min(380px,100%);margin-top:18px}.home-inner{width:100%;}.home-logo{max-width:90px}.screen .subtitle{flex-wrap:wrap;justify-content:center}.home-foot{font-size:11px;overflow-wrap:anywhere}.menu-btn{max-width:100%;}.panel-screen{width:100%;}.screen-actions{gap:6px;}}
+
+/* Keep every battle action reachable on narrow touch screens. */
+@media(max-width:760px){
+ #topbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) repeat(3,44px);gap:2px;padding:0 4px;}
+ #topbar .spacer{display:none;}
+ #topbar .res{min-width:0;overflow:hidden;font-size:10px;gap:2px;}
+ #topbar #faction-name,#topbar #status-msg{display:none;}
+ #topbar .hud-btn{width:44px;height:40px;min-width:0;}
+ #topbar .ic{font-size:12px;}
+ #sidebar{grid-template-columns:90px minmax(0,1fr);grid-template-rows:36px minmax(0,1fr);}
+ #tabs,.panel{min-width:0;min-height:0;}
+}
