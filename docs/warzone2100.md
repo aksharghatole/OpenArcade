@@ -16,3 +16,5 @@ Run Python 3.11+ from the repository root: `python scripts/stage-warzone2100.py 
 Upstream recommends WebGL2, 4–8 GiB RAM, desktop keyboard/mouse, and a 1024x768 display. The upstream web port documents campaign, skirmish, challenges and IndexedDB saves; videos may stream on demand. Touch, gamepad, offline, save/restore, skirmish and rendering are unverified. Do not deploy or claim playable until runtime and licensing gates pass.
 
 Tests: `python tests/warzone2100-stage-test.py`. CI also attempts to stage the pinned release and checks the nested catalogue and entry over HTTP; no binary artifact is uploaded.
+
+The preview removes the upstream analytics script and ignores initial service-worker takeover when deciding whether to display a game update prompt. The modified shell is reproducible from the pinned archive and included staging script. CI now clicks Play Now, requires the engine's post-run marker, a non-uniform rendered canvas frame and successful launch-state persistence; this is not a savegame roundtrip or campaign completion test. The preview still must not be deployed until release gates pass.
