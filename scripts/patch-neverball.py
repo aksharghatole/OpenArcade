@@ -23,3 +23,16 @@ anchor = 'download="neverball-source.zip">neverball-source.zip</a>'
 assert anchor in s
 s = s.replace(anchor, anchor + ' · <a href="./source/openarcade.patch">Integration patch</a> · <a href="./source/neverball.md">Build instructions and license notes</a> · <a href="./source/gl4es-source.zip">gl4es source</a>')
 p.write_text(s)
+
+# A parent OpenArcade worker may already control the initial document. It is
+# not an earlier Neverball version; taking over from it must not reload play.
+p = Path("js/index.html")
+s = p.read_text()
+old = "const hadController = Boolean(navigator.serviceWorker.controller);"
+assert s.count(old) == 1
+s = s.replace(old, """const ownWorkerURL = new URL('./service-worker.js', location.href).href;
+          const hadController = navigator.serviceWorker.controller?.scriptURL === ownWorkerURL;""")
+old = "if (navigator.serviceWorker.controller) {\n                    this.showUpdatePrompt(newWorker);"
+assert s.count(old) == 1
+s = s.replace(old, "if (navigator.serviceWorker.controller?.scriptURL === newWorker.scriptURL) {\n                    this.showUpdatePrompt(newWorker);")
+p.write_text(s)
