@@ -19,7 +19,7 @@ jobs:
       options: --ipc=host
     steps:
       - uses: actions/checkout@v4
-      - run: npm install --no-save --package-lock=false playwright@1.51.1
+      - run: npm install --no-save --package-lock=false playwright@1.51.1 pngjs@7.0.0
       - run: python3 tests/warzone2100-stage-test.py
       - run: python3 scripts/stage-warzone2100.py preview/OpenArcade
       - name: Check nested HTTP paths
