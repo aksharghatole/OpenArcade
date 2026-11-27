@@ -1,0 +1,68 @@
+name: Neverball integration candidate
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'docs/neverball.md'
+      - 'tests/neverball-browser.cjs'
+      - '.github/workflows/neverball.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container:
+      image: emscripten/emsdk:3.1.65
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: Neverball/neverball
+          ref: 7f32a34065f946cc84d619a001cc5d5b829a0671
+          path: upstream
+          persist-credentials: false
+      - name: Install upstream build dependencies
+        run: |
+          for attempt in 1 2 3; do
+            sudo rm -rf /var/lib/apt/lists/*
+            if sudo apt-get -o Acquire::Retries=3 -o Acquire::http::No-Cache=true update && sudo apt-get -o Acquire::Retries=3 -o Acquire::http::No-Cache=true install -y --no-install-recommends libpng-dev libjpeg-dev pkg-config libsdl2-dev libcurl4-openssl-dev ffmpeg zip unzip; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
+      - name: Build and stage candidate
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE/upstream"
+          bash scripts/build-neverball.sh upstream "$GITHUB_WORKSPACE/candidate"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: neverball-candidate
+          path: candidate/
+          retention-days: 3
+          if-no-files-found: error
+  browser-smoke:
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.51.1-noble
+      options: --ipc=host
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: neverball-candidate
+          path: preview/OpenArcade
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --package-lock=false playwright@1.51.1
+      - name: Test nested browser build
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory preview &
+          server=$!
+          trap 'kill "$server"' EXIT
+          node tests/neverball-browser.cjs
