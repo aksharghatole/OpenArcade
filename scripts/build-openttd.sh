@@ -21,7 +21,10 @@ for f in openttd.html openttd.js openttd.wasm openttd.data; do
   cp "build/$f" "$dest/"
 done
 git archive --format=zip --prefix=openttd-source/ HEAD > "$dest/source/openttd-source.zip"
-git -C "$gfx" archive --format=zip --prefix=opengfx2-source/ HEAD > "$dest/source/opengfx2-source.zip"
+# Candidate only: archive tracked source and LFS pointers without downloading every sprite.
+# The complete corresponding LFS source must be obtained and verified before release.
+GIT_LFS_SKIP_SMUDGE=1 git -C "$gfx" archive --format=zip --prefix=opengfx2-source/ HEAD > "$dest/source/opengfx2-source-index.zip"
+printf '%s\n' 'Candidate only: this archive contains Git LFS pointers, not full corresponding graphics source.' 'Obtain the pinned upstream checkout with git lfs pull before redistribution.' > "$dest/source/OPENgfx2-SOURCE-STATUS.txt"
 cp COPYING.md "$dest/source/OPENTTD-COPYING.md"
 cp CREDITS.md "$dest/source/OPENTTD-CREDITS.md"
 cp "$gfx/LICENSE" "$dest/source/OPENGFX2-LICENSE.txt"
