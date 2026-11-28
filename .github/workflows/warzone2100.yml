@@ -24,7 +24,7 @@ jobs:
       - run: python3 scripts/stage-warzone2100.py preview/OpenArcade
       - name: Check nested HTTP paths
         run: |
-          python3 -m http.server 8765 --bind 127.0.0.1 --directory preview &
+          python3 scripts/serve-warzone-preview.py preview &
           server=$!
           trap 'kill "$server"' EXIT
           curl --retry 5 --retry-connrefused --fail http://127.0.0.1:8765/OpenArcade/ -o /tmp/catalogue.html
