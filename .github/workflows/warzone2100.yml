@@ -1,0 +1,34 @@
+name: Warzone 2100 candidate
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/stage-warzone2100.py'
+      - 'tests/warzone2100-stage-test.py'
+      - 'tests/warzone2100-browser.cjs'
+      - 'docs/warzone2100.md'
+      - '.github/workflows/warzone2100.yml'
+permissions:
+  contents: read
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container:
+      image: mcr.microsoft.com/playwright:v1.51.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install --no-save --package-lock=false playwright@1.51.1 pngjs@7.0.0
+      - run: python3 tests/warzone2100-stage-test.py
+      - run: python3 scripts/stage-warzone2100.py preview/OpenArcade
+      - name: Check nested HTTP paths
+        run: |
+          python3 scripts/serve-warzone-preview.py preview &
+          server=$!
+          trap 'kill "$server"' EXIT
+          curl --retry 5 --retry-connrefused --fail http://127.0.0.1:8765/OpenArcade/ -o /tmp/catalogue.html
+          grep -F "play:'./games/warzone2100/'" /tmp/catalogue.html
+          curl --fail http://127.0.0.1:8765/OpenArcade/games/warzone2100/ -o /tmp/warzone.html
+          test -s /tmp/warzone.html
+          node tests/warzone2100-browser.cjs
