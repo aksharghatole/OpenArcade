@@ -1,8 +1,8 @@
 # OpenArcade
 
-A static browser game library for integrated games, open-source browser editions and legally acquired local game data.
+**[Play OpenArcade](https://aksharghatole.github.io/OpenArcade/)**
 
-**[Launch OpenArcade](https://aksharghatole.github.io/OpenArcade/)**
+OpenArcade is a browser arcade for playing games on your computer or phone. It brings original games and open-source favorites together in one place, with saves kept on your device. You can also add supported game files you already own.
 
 [Integrated games](#integrated-games) · [Run locally](#run-locally) · [Integration policy](#integration-policy) · [Roadmap](#roadmap)
 
